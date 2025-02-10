@@ -1,13 +1,20 @@
+import os
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.wsgi import WSGIMiddleware
 from django.core.wsgi import get_wsgi_application
 from .django_config import setup_django
 
-setup_django()  # Настроим Django
+setup_django()
 
-django_app = get_wsgi_application()  # Получаем WSGI-приложение Django
+django_app = get_wsgi_application()
 
 app = FastAPI()
+
+if not os.path.exists("static"):
+    os.makedirs("static")
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 @app.get("/v2")

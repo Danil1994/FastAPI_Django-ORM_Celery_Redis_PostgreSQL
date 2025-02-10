@@ -2,6 +2,11 @@ import os
 import django
 from django.conf import settings
 
+# Определяем путь к корню проекта
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # fastapi_app/
+PROJECT_ROOT = os.path.dirname(BASE_DIR)  # Корень проекта
+
+
 def setup_django():
     if not settings.configured:
         settings.configure(
@@ -17,7 +22,7 @@ def setup_django():
             DATABASES={
                 "default": {
                     "ENGINE": "django.db.backends.sqlite3",
-                    "NAME": "db.sqlite3",
+                    "NAME": os.path.join(PROJECT_ROOT, "db.sqlite3"),
                 }
             },
             MIDDLEWARE=[
@@ -30,6 +35,23 @@ def setup_django():
             ],
             ROOT_URLCONF="fastapi_app.urls",
             DEBUG=True,
+            STATIC_URL="/static/",
+            STATIC_ROOT=os.path.join(PROJECT_ROOT, "static"),
+            TEMPLATES=[
+                {
+                    "BACKEND": "django.template.backends.django.DjangoTemplates",
+                    "DIRS": [],
+                    "APP_DIRS": True,
+                    "OPTIONS": {
+                        "context_processors": [
+                            "django.template.context_processors.debug",
+                            "django.template.context_processors.request",
+                            "django.contrib.auth.context_processors.auth",
+                            "django.contrib.messages.context_processors.messages",
+                        ],
+                    },
+                },
+            ],
         )
         django.setup()
 

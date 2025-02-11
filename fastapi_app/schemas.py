@@ -31,7 +31,7 @@ class Currency(CurrencyBase):
     id: int
 
     class Config:
-        orm_mode = True  # Это нужно, чтобы Pydantic мог работать с ORM моделями Django
+        orm_mode = True
 
 
 class ProviderBase(BaseModel):
@@ -48,7 +48,7 @@ class Provider(ProviderBase):
 
     class Config:
         orm_mode = True
-
+        from_attributes = True
 
 class BlockBase(BaseModel):
     block_number: int

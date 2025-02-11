@@ -19,7 +19,6 @@ if not os.path.exists("static"):
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Монтируем Django на /v1
 app.mount("/v1", WSGIMiddleware(django_app))
 app.include_router(fastapi_router)
 

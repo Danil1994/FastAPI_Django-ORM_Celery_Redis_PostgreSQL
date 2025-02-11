@@ -18,6 +18,7 @@ def setup_django():
                 "django.contrib.sessions",
                 "django.contrib.messages",
                 "django.contrib.staticfiles",
+                'fastapi_app',
             ],
             DATABASES={
                 "default": {

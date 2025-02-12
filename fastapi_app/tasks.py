@@ -4,34 +4,41 @@ import requests
 import os
 import django
 
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fastapi_app.settings')
 django.setup()
-# from celery import shared_task
+from celery import shared_task
 from django.utils.timezone import now
 from fastapi_app.models import Block, Currency, Provider
 
 COINMARKETCAP_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
 BLOCKCHAIR_ETH_URL = "https://api.blockchair.com/ethereum/stats"
 
-HEADERS = {"X-CMC_PRO_API_KEY": "9c8d92e2-9a34-4d4a-8a53-0280eca1e7d3"}
+API_KEY_BLOCKCHAIR = ""
+API_KEY_COINMARKETCAP = "9c8d92e2-9a34-4d4a-8a53-0280eca1e7d3"
 
-#
-# @shared_task
-def fetch_btc_block():
-    """Получает последний блок BTC из CoinMarketCap и сохраняет его"""
-    response = requests.get(COINMARKETCAP_URL, headers=HEADERS)
+
+@shared_task
+def fetch_btc_block(api_key: str = "9c8d92e2-9a34-4d4a-8a53-0280eca1e7d3"):
+    headers = {
+        "X-CMC_PRO_API_KEY": api_key
+    }
+    response = requests.get(COINMARKETCAP_URL, headers=headers)
     data = response.json()
 
-    btc_data = next((item for item in data["data"] if item["symbol"] == "BTC"), None)
+    btc_data = next((item for item in data.get("data", []) if item.get("symbol") == "BTC"), None)
     if not btc_data:
         return "BTC data not found"
 
-    for _ in btc_data:
-        print(_, btc_data[_])
-
+    print(btc_data)
     currency, _ = Currency.objects.get_or_create(name="BTC")
-    provider, _ = Provider.objects.get_or_create(name="CoinMarketCap")
+
+    provider, created = Provider.objects.get_or_create(
+        name="CoinMarketCap",
+    )
+
+    if not created and provider.api_key != api_key:
+        provider.api_key = api_key
+        provider.save()
 
     block_number = btc_data["num_market_pairs"]
 
@@ -50,12 +57,12 @@ def fetch_btc_block():
     return f"BTC Block {block_number} saved"
 
 
-# @shared_task
-def fetch_eth_block():
-    """Получает последний блок ETH из BlockChair и сохраняет его"""
-    response = requests.get(BLOCKCHAIR_ETH_URL)
+@shared_task
+def fetch_eth_block(api_key: str = ""):
+    headers = {"X-API-Key": api_key} if api_key else {}
+    response = requests.get(BLOCKCHAIR_ETH_URL, )
     data = response.json()
-    print(f"From blockchain data: {data}")
+
 
     if "data" not in data or not data["data"]:
         return "No ETH data found"
@@ -64,7 +71,15 @@ def fetch_eth_block():
     block_number = latest_block["blocks"]
 
     currency, _ = Currency.objects.get_or_create(name="ETH")
-    provider, _ = Provider.objects.get_or_create(name="BlockChair")
+
+    provider, created = Provider.objects.get_or_create(
+        name="BlockChair",
+        defaults={"api_key": api_key}
+    )
+
+    if not created and provider.api_key != api_key:
+        provider.api_key = api_key
+        provider.save()
 
     if not Block.objects.filter(block_number=block_number, currency=currency).exists():
         Block.objects.create(
@@ -76,6 +91,6 @@ def fetch_eth_block():
 
     return f"ETH Block {block_number} saved"
 
-
-if __name__ == '__main__':
-    fetch_btc_block()
+# if __name__ == '__main__':
+#     fetch_btc_block(API_KEY_COINMARKETCAP)
+#     fetch_eth_block(API_KEY_BLOCKCHAIR)

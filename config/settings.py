@@ -2,9 +2,8 @@ import os
 import django
 from django.conf import settings
 
-# Определяем путь к корню проекта
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # fastapi_app/
-PROJECT_ROOT = os.path.dirname(BASE_DIR)  # Корень проекта
+PROJECT_ROOT = os.path.dirname(BASE_DIR)
 
 
 def setup_django():

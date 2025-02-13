@@ -1,13 +1,17 @@
-from datetime import datetime
-
 import requests
 import os
 import django
+from datetime import datetime
+
+from dotenv import load_dotenv
+load_dotenv()
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+API_KEY_BLOCKCHAIR = os.getenv("API_KEY_BLOCKCHAIR")
+API_KEY_COINMARKETCAP = os.getenv("API_KEY_COINMARKETCAP")
 django.setup()
 
-from .celery_config import celery_app
+from fastapi_app.celery_config import celery_app
 from celery import shared_task
 from django.utils.timezone import now
 from fastapi_app.models import Block, Currency, Provider
@@ -15,19 +19,21 @@ from fastapi_app.models import Block, Currency, Provider
 COINMARKETCAP_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
 BLOCKCHAIR_ETH_URL = "https://api.blockchair.com/ethereum/stats"
 
-API_KEY_BLOCKCHAIR = ""
-API_KEY_COINMARKETCAP = "9c8d92e2-9a34-4d4a-8a53-0280eca1e7d3"
 
 
 @shared_task
-def fetch_btc_block(api_key: str = "9c8d92e2-9a34-4d4a-8a53-0280eca1e7d3"):
+def fetch_btc_block(api_key: str):
+    print(API_KEY_COINMARKETCAP)
+    print(api_key)
     headers = {
         "X-CMC_PRO_API_KEY": api_key
     }
     response = requests.get(COINMARKETCAP_URL, headers=headers)
     data = response.json()
+    print(data)
 
     btc_data = next((item for item in data.get("data", []) if item.get("symbol") == "BTC"), None)
+    print(btc_data)
     if not btc_data:
         return "BTC data not found"
 
@@ -61,7 +67,7 @@ def fetch_btc_block(api_key: str = "9c8d92e2-9a34-4d4a-8a53-0280eca1e7d3"):
 
 
 @shared_task
-def fetch_eth_block(api_key: str = ""):
+def fetch_eth_block(api_key: str ):
     headers = {"X-API-Key": api_key} if api_key else {}
     response = requests.get(BLOCKCHAIR_ETH_URL, )
     data = response.json()
@@ -95,5 +101,5 @@ def fetch_eth_block(api_key: str = ""):
 
 
 # if __name__ == '__main__':
-    # fetch_btc_block()
-    # fetch_eth_block()
+#     fetch_btc_block(API_KEY_COINMARKETCAP)
+#     fetch_eth_block(API_KEY_BLOCKCHAIR)

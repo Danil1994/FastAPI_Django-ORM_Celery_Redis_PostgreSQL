@@ -4,8 +4,10 @@ import requests
 import os
 import django
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fastapi_app.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
+
+from .celery_config import celery_app
 from celery import shared_task
 from django.utils.timezone import now
 from fastapi_app.models import Block, Currency, Provider
@@ -29,7 +31,6 @@ def fetch_btc_block(api_key: str = "9c8d92e2-9a34-4d4a-8a53-0280eca1e7d3"):
     if not btc_data:
         return "BTC data not found"
 
-    print(btc_data)
     currency, _ = Currency.objects.get_or_create(name="BTC")
 
     provider, created = Provider.objects.get_or_create(
@@ -40,6 +41,8 @@ def fetch_btc_block(api_key: str = "9c8d92e2-9a34-4d4a-8a53-0280eca1e7d3"):
         provider.api_key = api_key
         provider.save()
 
+    # for i in btc_data:
+    #     print(i, btc_data[i])
     block_number = btc_data["num_market_pairs"]
 
     date_added_str = btc_data["date_added"]
@@ -62,7 +65,6 @@ def fetch_eth_block(api_key: str = ""):
     headers = {"X-API-Key": api_key} if api_key else {}
     response = requests.get(BLOCKCHAIR_ETH_URL, )
     data = response.json()
-
 
     if "data" not in data or not data["data"]:
         return "No ETH data found"
@@ -91,6 +93,7 @@ def fetch_eth_block(api_key: str = ""):
 
     return f"ETH Block {block_number} saved"
 
+
 # if __name__ == '__main__':
-#     fetch_btc_block(API_KEY_COINMARKETCAP)
-#     fetch_eth_block(API_KEY_BLOCKCHAIR)
+    # fetch_btc_block()
+    # fetch_eth_block()

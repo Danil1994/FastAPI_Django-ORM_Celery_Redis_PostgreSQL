@@ -19,6 +19,7 @@ def setup_django():
                 "django.contrib.messages",
                 "django.contrib.staticfiles",
                 'fastapi_app',
+                "django_celery_beat",
             ],
             DATABASES={
                 "default": {
@@ -37,7 +38,7 @@ def setup_django():
             ROOT_URLCONF="fastapi_app.urls",
             DEBUG=True,
             STATIC_URL="/static/",
-            STATIC_ROOT=os.path.join(PROJECT_ROOT, "static"),
+            STATIC_ROOT=os.path.join(PROJECT_ROOT, "../fastapi_app/static"),
             TEMPLATES=[
                 {
                     "BACKEND": "django.template.backends.django.DjangoTemplates",

@@ -18,7 +18,7 @@ them in the database.
 
 ### 🔹 1. Clone the repository
 ```sh
-git clone https://github.com/Danil1994/FastAPI_Django-ORM_Celery_Redis_PostgreSQL.git
+git clone https://github.com/Danil1994/FastAPI_Django-ORM_Celery_Redis_SQL.git
 
 ```
 ```sh

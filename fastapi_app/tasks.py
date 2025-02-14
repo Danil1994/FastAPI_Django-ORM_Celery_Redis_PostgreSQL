@@ -5,7 +5,7 @@ import django
 import requests
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(dotenv_path='.env.local')
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 API_KEY_BLOCKCHAIR = os.getenv("API_KEY_BLOCKCHAIR")

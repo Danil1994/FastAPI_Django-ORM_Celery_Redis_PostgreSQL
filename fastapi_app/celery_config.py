@@ -9,7 +9,7 @@ from celery import Celery
 from celery.schedules import crontab
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(dotenv_path='.env.local')
 
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://127.0.0.1:6379/0")
 API_KEY_BLOCKCHAIR = os.getenv("API_KEY_BLOCKCHAIR")

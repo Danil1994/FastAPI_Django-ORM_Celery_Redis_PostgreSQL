@@ -44,6 +44,33 @@ pip install -r requirements.txt
 pip install "fastapi[standard]"
 ```
 
+### Data base configuration
+by default application configurate to work with PostgreSQL. So you should configurate connection with your data base.
+Or you may use SQLite, for it go to config/setting.py 
+Comment existing database and uncomment SQLite DB
+
+            # uncomment for SQLite using
+            #
+            # DATABASES={
+            #     "default": {
+            #         "ENGINE": "django.db.backends.sqlite3",
+            #         "NAME": os.path.join(PROJECT_ROOT, "db.sqlite3"),
+            #     }
+            # },
+
+            DATABASES={
+                "default": {
+                    "ENGINE": "django.db.backends.postgresql",
+                    "NAME": os.getenv("POSTGRES_DB", "postgres"),
+                    "USER": os.getenv("POSTGRES_USER", "postgres"),
+                    "PASSWORD": os.getenv("POSTGRES_PASSWORD", "password"),
+                    "HOST": os.getenv("POSTGRES_HOST", "postgres_db"),
+                    "PORT": os.getenv("POSTGRES_PORT", "5432"),
+                }
+            },
+
+When DB settings are ready:
+
 ### 🔹 6. Apply migrations
 ```sh
 python manage.py makemigrations
@@ -100,8 +127,10 @@ docker-compose up --build
 ```
 After that, the following will be launched:
 - FastAPI application (available at `http://localhost:8000`)
+- FastAPI docs (`http://127.0.0.1:8000/docs#/`)
 - PostgreSQL (`localhost:5432`)
 - Redis (`localhost:6379`)
+- Django admin (`http://localhost:8000/django/admin/`)
 - Celery worker
 
 ---

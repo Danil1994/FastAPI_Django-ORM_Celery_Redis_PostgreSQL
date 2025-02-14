@@ -20,13 +20,28 @@ def setup_django():
                 "django.contrib.staticfiles",
                 'fastapi_app',
             ],
+            # uncomment for SQLite using
+
+            # DATABASES={
+            #     "default": {
+            #         "ENGINE": "django.db.backends.sqlite3",
+            #         "NAME": os.path.join(PROJECT_ROOT, "db.sqlite3"),
+            #     }
+            # },
+
             DATABASES={
                 "default": {
-                    "ENGINE": "django.db.backends.sqlite3",
-                    "NAME": os.path.join(PROJECT_ROOT, "db.sqlite3"),
+                    "ENGINE": "django.db.backends.postgresql",
+                    "NAME": os.getenv("POSTGRES_DB", "postgres"),
+                    "USER": os.getenv("POSTGRES_USER", "postgres"),
+                    "PASSWORD": os.getenv("POSTGRES_PASSWORD", "password"),
+                    "HOST": os.getenv("POSTGRES_HOST", "postgres_db"),
+                    "PORT": os.getenv("POSTGRES_PORT", "5432"),
                 }
             },
-            MIDDLEWARE=[
+
+
+        MIDDLEWARE=[
                 "django.middleware.security.SecurityMiddleware",
                 "django.contrib.sessions.middleware.SessionMiddleware",
                 "django.middleware.common.CommonMiddleware",

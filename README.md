@@ -65,6 +65,15 @@ You may check fastapi API works here http://127.0.0.1:8000/docs
 
 Admin panel availabels here http://localhost:8000/django/admin/
 
+### OPTIONAL
+You may create fake data for testing
+
+```sh
+python fastapi_app/create_fake_data.py
+```
+
+(Create 50 blocks, 10 currencies, 3 providers)
+
 ### 🔹 9. Run Celery
 !!! Be sure that your message broker is working !!!
 for example use this command in your terminal to run Redis 

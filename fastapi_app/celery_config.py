@@ -1,4 +1,5 @@
 import os
+
 import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
@@ -7,6 +8,7 @@ django.setup()
 from celery import Celery
 from celery.schedules import crontab
 from dotenv import load_dotenv
+
 load_dotenv()
 
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://127.0.0.1:6379/0")

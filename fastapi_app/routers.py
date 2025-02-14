@@ -1,12 +1,12 @@
 from typing import Optional
 
+from asgiref.sync import sync_to_async
+from django.contrib.auth.models import User
 from django.db import IntegrityError
 from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.security import OAuth2PasswordRequestForm
-from django.contrib.auth.models import User
-from asgiref.sync import sync_to_async
+
 from . import models
-from .schemas import CurrencyCreate, Currency, ProviderCreate, Provider, BlockCreate, Block as BlockSchema
 
 router = APIRouter()
 

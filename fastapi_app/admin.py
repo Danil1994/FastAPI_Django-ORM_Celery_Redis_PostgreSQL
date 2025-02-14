@@ -1,5 +1,6 @@
 from django.contrib import admin
-from fastapi_app.models import Currency, Provider, Block
+
+from fastapi_app.models import Block, Currency, Provider
 
 
 @admin.register(Currency)
@@ -12,6 +13,7 @@ class CurrencyAdmin(admin.ModelAdmin):
 class ProviderAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "api_key")
     search_fields = ("name",)
+
 
 @admin.register(Block)
 class BlockAdmin(admin.ModelAdmin):

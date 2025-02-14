@@ -1,6 +1,6 @@
-from django.urls import path
 from django.contrib import admin
 from django.http import JsonResponse
+from django.urls import path
 
 
 def django_main(request):

@@ -1,19 +1,23 @@
 import os
+import random
+import sys
+
 import django
+from django.utils import timezone
 from faker import Faker
 
-from django.utils import timezone
-import random
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fastapi_app.settings')
+from config import settings
+
 django.setup()
 
-from fastapi_app.models import Currency, Provider, Block
+from fastapi_app.models import Block, Currency, Provider
 
 fake = Faker()
 
 
-def create_fake_data(blocks_num=10, currenies_num=5):
+def create_fake_data(blocks_num=50, currenies_num=10):
     currencies = []
 
     for _ in range(currenies_num):
@@ -38,8 +42,6 @@ def create_fake_data(blocks_num=10, currenies_num=5):
         )
     print(f"Created block {block.block_number} for currency {block.currency.name}")
 
-
-create_fake_data()
 
 if __name__ == "__main__":
     create_fake_data()

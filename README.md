@@ -27,9 +27,11 @@ cd to your repo
 ### 🔹 2. Create virtual env
 
 ### 🔹 3. Set up environment variables
-Create a `.env` file in the root folder and specify the variables:
-```env
-CELERY_BROKER_URL=redis://redis:6379/0
+Create a `.env.local` file in the root folder and specify the variables for local development 
+and `.env.docker` file for docker
+
+```env.example
+CELERY_BROKER_URL=redis url
 API_KEY_BLOCKCHAIR=your_blockchair_api_key
 API_KEY_COINMARKETCAP=your_coinmarketcap_api_key
 ```
@@ -39,13 +41,8 @@ API_KEY_COINMARKETCAP=your_coinmarketcap_api_key
 pip install -r requirements.txt
 ```
 
-### 🔹 5. Install "fastapi[standard]"
-```sh
-pip install "fastapi[standard]"
-```
-
-### Data base configuration
-by default application configurate to work with PostgreSQL. So you should configurate connection with your data base.
+### 🔹 5.  Data base configuration
+By default application configurate to work with PostgreSQL. So you should configurate connection with your data base.
 Or you may use SQLite, for it go to config/setting.py 
 Comment existing database and uncomment SQLite DB
 

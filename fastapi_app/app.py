@@ -14,8 +14,8 @@ django_app = get_wsgi_application()
 
 app = FastAPI()
 
-if not os.path.exists("static"):
-    os.makedirs("static")
+if not os.path.exists("../static"):
+    os.makedirs("../static")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 

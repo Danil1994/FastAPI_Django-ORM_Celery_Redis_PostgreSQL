@@ -36,7 +36,7 @@ def setup_django():
             ROOT_URLCONF="fastapi_app.urls",
             DEBUG=True,
             STATIC_URL="/static/",
-            STATIC_ROOT=os.path.join(PROJECT_ROOT, "../fastapi_app/static"),
+            STATIC_ROOT=os.path.join(PROJECT_ROOT, "../static"),
             TEMPLATES=[
                 {
                     "BACKEND": "django.template.backends.django.DjangoTemplates",

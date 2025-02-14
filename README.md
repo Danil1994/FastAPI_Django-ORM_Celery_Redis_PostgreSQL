@@ -19,11 +19,11 @@ them in the database.
 
 ### 🔹 1. Clone the repository
 ```sh
-git clone https://github.com/your-repo.git
+git clone https://github.com/Danil1994/FastAPI_Django-ORM_Celery_Redis_PostgreSQL.git
 cd your-repo
 ```
 
-### 2. Create virtual env
+### 🔹 2. Create virtual env
 
 ### 🔹 3. Set up environment variables
 Create a `.env` file in the root folder and specify the variables:
@@ -34,29 +34,42 @@ API_KEY_BLOCKCHAIR=your_blockchair_api_key
 API_KEY_COINMARKETCAP=your_coinmarketcap_api_key
 ```
 
-### 4. Install dependencies
+### 🔹 4. Install dependencies
 ```sh
 pip install -r requirements.txt
 ```
 
-### 5. Apply migrations
+### 🔹 5. Apply migrations
+```sh
+python manage.py makemigrations
+```
 ```sh
 python manage.py migrate
 ```
 
-### 6. Run FastAPI
+### 🔹 6. Install "fastapi[standard]"
 ```sh
-uvicorn fastapi_app.app:app --reload
+pip install "fastapi[standard]"
 ```
 
-### 7. Run Celery
+### 🔹 7. Run FastAPI
+```sh
+fastapi dev main.py
+```
+
+### 🔹 8. Run Celery
+!!! Be sure that your message broker is working !!!
+
 ```sh
 celery -A fastapi_app.celery_config worker --loglevel=info -P eventlet
 ```
-### 8. Run Celery Beat
+### 🔹 9. Run Celery Beat
 ```sh
 celery -A fastapi_app.celery_config beat --loglevel=info
 ```
+
+Now app is working. Every minute it send request to[ CoinMarketCap ](https://coinmarketcap.com/api/documentation/v1/#tag/blockchain)
+and [BlockChair](https://blockchair.com/api/docs#link_002) and save data about BTC and ETH to DB.
 
 
 ### 🔹 Launch via Docker

@@ -7,3 +7,4 @@ pydantic==2.10.6
 python-dotenv==1.0.1
 Requests==2.32.3
 Eventlet==0.39.0
+redis==5.2.1

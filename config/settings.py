@@ -18,7 +18,6 @@ def setup_django():
                 "django.contrib.messages",
                 "django.contrib.staticfiles",
                 'fastapi_app',
-                "django_celery_beat",
             ],
             DATABASES={
                 "default": {

@@ -30,10 +30,8 @@ def fetch_btc_block(api_key: str):
     }
     response = requests.get(COINMARKETCAP_URL, headers=headers)
     data = response.json()
-    print(data)
 
     btc_data = next((item for item in data.get("data", []) if item.get("symbol") == "BTC"), None)
-    print(btc_data)
     if not btc_data:
         return "BTC data not found"
 
